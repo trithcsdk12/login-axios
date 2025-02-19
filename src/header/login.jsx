@@ -49,6 +49,10 @@ export default function LoginForm() {
     }
   };
 
+  const handleDelete = () => {
+    localStorage.clear()
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -74,6 +78,7 @@ export default function LoginForm() {
         <button type="submit">Đăng nhập</button>
       </form>
       <button onClick={handleCheck}>Kiểm tra vai trò</button>
+      <button onClick={handleDelete}>Xoá LocalStorage</button>
     </>
   );
 }
