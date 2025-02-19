@@ -16,6 +16,12 @@ const users = [
     password: "password",
     role: "user",
   },
+  {
+    id: 3,
+    username: "guest",
+    password: "000000",
+    role: "guest",
+  },
 ];
 
 // POST: /api/auth/login
@@ -64,9 +70,11 @@ router.get("/check-role", (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded.role === "admin") {
-      res.json({ message: "Bạn đang ở vai trò admin." });
+      res.status(200).json({ message: "Bạn đang ở vai trò admin." });
     } else if (decoded.role === "user") {
-      res.json({ message: "Bạn đang ở vai trò user." });
+      res.status(200).json({ message: "Bạn đang ở vai trò user." });
+    } else if (decoded.role === "guest") {
+      res.status(200).json({ message: "Bạn đang ở vai trò khách." });
     } else {
       res.status(403).json({ message: "Access denied. Invalid role." });
     }
