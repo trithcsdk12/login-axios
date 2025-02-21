@@ -47,13 +47,13 @@ function nav() {
                   <span className="nav-link mx-3">Xin chào, {user}!</span>
                 </li>
                 <li className="nav-item">
-                  <Link
+                  <button
                     style={{ textDecoration: "none" }}
                     className="nav-link mx-3"
                     onClick={handleLogOut}
                   >
                     Đăng xuất
-                  </Link>
+                  </button>
                 </li>
               </>
             ) : (
