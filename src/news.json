@@ -1,0 +1,106 @@
+[
+  {
+    "index": 1,
+    "name": "Nvidia loại bỏ hỗ trợ PhysX trên dòng GPU RTX 50-series",
+    "date": "20/02/2025",
+    "category": "Technology",
+    "desc": "Nvidia đã loại bỏ hỗ trợ cho PhysX trong các card đồ họa RTX 50-series mới nhất, bao gồm RTX 5090, 5080 và 5070 Ti. Điều này ảnh hưởng đến các trò chơi dựa vào PhysX được tăng tốc bởi GPU để mô phỏng chuyển động thực tế, như môi trường có thể phá hủy và hiệu ứng hạt. Người chơi đã nhận thấy sự giảm hiệu suất trong các trò chơi phụ thuộc vào PhysX, do CPU phải gánh vác nhiệm vụ thay vì GPU.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/20/bat1-1739940492278-1739940492753455043873-1739940548829-17399405494691272494677-1740018969398-17400189694721044832769.jpg"
+  },
+  {
+    "index": 2,
+    "name": "Đánh giá Nvidia GeForce RTX 5070 Ti: Lựa chọn thay thế RTX 4080 với giá phải chăng",
+    "date": "20/02/2025",
+    "category": "Technology",
+    "desc": "Nvidia GeForce RTX 5070 Ti, với giá 749 USD, mang lại hiệu suất vượt trội so với AMD RX 7900 XT và cạnh tranh sát sao với RX 7900 XTX và Nvidia RTX 5080. Card này cung cấp hiệu suất mạnh mẽ cho chơi game 1440p và khả năng 4K ổn định, cùng với các cải tiến như DLSS 4 và Multi Frame Generation, giúp tăng tốc độ khung hình và cải thiện độ rõ nét hình ảnh.",
+    "image": "https://protechcomputer.vn/media/images/Danh%20gia%20Nvidia%20GeForce%20RTX%205070%20Ti%20%2017.webp"
+  },
+  {
+    "index": 3,
+    "name": "Nvidia RTX 5090 gặp sự cố nóng chảy đầu nối nguồn",
+    "date": "15/02/2025",
+    "category": "Technology",
+    "desc": "Người dùng sở hữu GPU Nvidia RTX 5090 Founders Edition đang báo cáo về sự cố đầu nối nguồn bị nóng chảy, tương tự như vấn đề đã xảy ra với RTX 4090 hai năm trước. Các báo cáo cho thấy đầu nối nguồn bị cháy và gây hư hỏng cho bộ nguồn. Mặc dù Nvidia đã áp dụng đầu nối 12V-2×6 được cập nhật để giảm thiểu các vấn đề trước đó, nhưng sự cố vẫn tiếp diễn.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/11/rtx-5090fe-molten-12vhpwr-v0-26wiwqtmv4ie1-1739241680745-1739241680956966165837.png"
+  },
+  {
+    "index": 4,
+    "name": "Nvidia giới thiệu máy tính AI cá nhân giá 3.000 USD tại CES 2025",
+    "date": "10/01/2025",
+    "category": "Technology",
+    "desc": "Tại triển lãm điện tử tiêu dùng CES 2025, Nvidia đã giới thiệu máy tính AI cá nhân dựa trên chip GB10, được thiết kế cho các nhà phát triển, với giá 3.000 USD. Thiết bị này đủ mạnh để chạy các mô hình AI phức tạp trong một kích thước nhỏ gọn, mở ra cơ hội mới cho việc phát triển và ứng dụng AI cá nhân.",
+    "image": "https://i1-sohoa.vnecdn.net/2025/01/08/cdn-vox-cdn-1-1736302244-5252-1736302393.png?w=0&h=0&q=100&dpr=2&fit=crop&s=LzC6A6oiRkvUsYtOy1QzUw"
+  },
+  {
+    "index": 5,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 6,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 7,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 8,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 9,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 10,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 11,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 12,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  },
+  {
+    "index": 13,
+    "name": "GPU Nvidia H100 biến thành túi xách giá gần 1,7 tỷ đồng",
+    "date": "19/02/2025",
+    "category": "Technology",
+    "desc": "Công ty GPU Purses đã biến GPU AI Nvidia H100 thành một chiếc túi xách độc đáo, được gọi là 'Túi xách H100'. Sản phẩm này thu hút sự chú ý khi kết hợp giữa công nghệ cao và thời trang, với mức giá gần 1,7 tỷ đồng.",
+    "image": "https://genk.mediacdn.vn/139269124445442048/2025/2/19/photo-1739951105894-1739951106515733260355-1739971423222-17399714233931354627553.jpeg"
+  }
+]

@@ -1,10 +1,12 @@
 // src/components/LoginForm.js
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleCheck = async () => {
     const token = localStorage.getItem("token");
@@ -12,7 +14,6 @@ export default function LoginForm() {
       alert("Bạn chưa đăng nhập!");
       return;
     }
-
     try {
       const response = await axios.get(
         "http://localhost:5000/api/auth/check-role",
@@ -43,11 +44,14 @@ export default function LoginForm() {
           password,
         }
       );
+      console.log(response.data);
 
       if (response.status === 200) {
         // Lưu JWT vào localStorage hoặc sessionStorage
+        localStorage.setItem("username", response.data.user.username);
         localStorage.setItem("token", response.data.token);
         alert("Đăng nhập thành công!");
+        navigate("/home");
       } else {
         alert("Sai tài khoản hoặc mật khẩu");
       }
