@@ -6,15 +6,15 @@ const axiosClient = axios.create({
   baseURL: 'https://api.chinhnhan.net/api/',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: localStorage.getItem('user')
-      ? `Bearer ${localStorage.getItem('user')}`
+    Authorization: localStorage.getItem('adminCN')
+      ? `Bearer ${localStorage.getItem('adminCN')}`
       : '',
   },
 })
 
 axiosClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('user')
+    const token = localStorage.getItem('adminCN')
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
