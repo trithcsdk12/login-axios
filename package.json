@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@coreui/coreui": "^5.2.0",
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.3.0",
     "@coreui/react": "^5.5.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
@@ -23,11 +25,15 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
     "mongoose": "^8.10.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.2.0"
+    "react-google-recaptcha": "^3.1.0",
+    "react-paginate": "^8.3.0",
+    "react-router-dom": "^7.2.0",
+    "react-toastify": "^11.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

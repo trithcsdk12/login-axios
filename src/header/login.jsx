@@ -1,97 +1,163 @@
-// src/components/LoginForm.js
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 
-export default function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+import { axiosClient } from '../../axiosConfig'
+import { toast } from 'react-toastify'
 
-  const handleCheck = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Bạn chưa đăng nhập!");
-      return;
+import ReCAPTCHA from 'react-google-recaptcha'
+
+const Login = () => {
+  const [username, setUserName] = useState('')
+  const [password, setPassWord] = useState('')
+  const [key, setKey] = useState('')
+
+  const [recaptchaToken, setRecaptchaToken] = useState(null)
+  const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(false)
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin()
     }
+  }
+
+  const handleRecaptcha = (token) => {
+    setRecaptchaToken(token)
+  }
+
+  const handleLogin = async () => {
+    if (!recaptchaToken) {
+      toast.error('Vui lòng xác minh GOOGLE CAPTCHA trước khi đăng nhập!')
+      return
+    }
+
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/auth/check-role",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        alert(response.data.message);
+      setLoading(true)
+
+      const res = await axiosClient.post('/admin-login', {
+        username,
+        password,
+        passwordSecurity: key,
+        captchaToken: recaptchaToken,
+      })
+
+      if (res.data.status === true) {
+        localStorage.setItem('adminCN', res.data.token)
+        localStorage.setItem('username', res.data.username)
+        navigate('/home')
       } else {
-        alert("Không thể kiểm tra vai trò. Vui lòng thử lại!");
+        if (res.data.mess == 'username') {
+          toast.error('Sai tên đăng nhập!. Vui lòng kiểm tra lại!')
+        } else if (res.data.mess == 'pass') {
+          toast.error('Sai mật khẩu. Vui lòng kiểm tra lại!')
+        } else if (res.data.mess == 'wrong passwordSecurity') {
+          toast.error('Sai khóa bảo mật. Vui lòng kiểm tra lại!')
+        }
+        console.error('Đăng nhập thất bại!!!')
       }
     } catch (error) {
-      console.error("Lỗi kiểm tra vai trò", error);
-      alert("Không thể kiểm tra vai trò. Vui lòng thử lại!");
+      console.error('Post login data is error', error)
+      toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại thông tin!')
+    } finally {
+      setLoading(false)
     }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        {
-          username,
-          password,
-        }
-      );
-      console.log(response.data);
-
-      if (response.status === 200) {
-        // Lưu JWT vào localStorage hoặc sessionStorage
-        localStorage.setItem("username", response.data.user.username);
-        localStorage.setItem("token", response.data.token);
-        alert("Đăng nhập thành công!");
-        navigate("/home");
-      } else {
-        alert("Sai tài khoản hoặc mật khẩu");
-      }
-    } catch (error) {
-      console.error("Đăng nhập thất bại", error);
-      alert("Sai tài khoản hoặc mật khẩu");
-    }
-  };
-
-  const handleDelete = () => {
-    localStorage.clear();
-    alert("Đã xoá LocalStorage");
-  };
+  }
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <h2>Đăng nhập</h2>
-        <div>
-          <label>Tên đăng nhập:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Mật khẩu:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Đăng nhập</button>
-      </form>
-      <button onClick={handleCheck}>Kiểm tra vai trò</button>
-      <button onClick={handleDelete}>Xoá LocalStorage</button>
+      <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+        <CContainer>
+          <CRow className="justify-content-center">
+            <CCol md={4}>
+              <CCardGroup>
+                <CCard className="p-4">
+                  <CCardBody>
+                    <CForm onKeyDown={handleKeyDown}>
+                      <div style={{ width: '100%', marginBottom: 10 }}>
+                      </div>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilUser} />
+                        </CInputGroupText>
+                        <CFormInput
+                          placeholder="Tài khoản"
+                          autoComplete="username"
+                          value={username}
+                          onChange={(e) => setUserName(e.target.value)}
+                        />
+                      </CInputGroup>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <CFormInput
+                          type="password"
+                          placeholder="Mật khẩu"
+                          autoComplete="current-password"
+                          value={password}
+                          onChange={(e) => setPassWord(e.target.value)}
+                        />
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <CFormInput
+                          type="password"
+                          placeholder="Khóa bảo mật"
+                          autoComplete="current-password"
+                          value={key}
+                          onChange={(e) => setKey(e.target.value)}
+                        />
+                      </CInputGroup>
+
+                      <div>
+                        <ReCAPTCHA
+                          style={{ marginBottom: 20, transform: 'scale(0.8)', marginRight: 100 }}
+                          sitekey="6LeHyqsqAAAAAG7uKv9T_pOJUjoHg9sxvzKyL-UT"
+                          onChange={handleRecaptcha}
+                        />
+                      </div>
+
+                      <CRow className="justify-content-md-center">
+                        <CCol xs={12}>
+                          <CButton
+                            onKeyDown={handleKeyDown}
+                            onClick={handleLogin}
+                            color="primary"
+                            className="px-4 w-100"
+                          >
+                            Đăng nhập
+                          </CButton>
+                        </CCol>
+                      </CRow>
+                    </CForm>
+                  </CCardBody>
+                </CCard>
+              </CCardGroup>
+            </CCol>
+          </CRow>
+        </CContainer>
+      </div>
     </>
-  );
+  )
 }
+
+export default Login
