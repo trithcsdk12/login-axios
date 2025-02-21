@@ -1,9 +1,10 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 
-dotenv.config();
 const router = express.Router();
+const JWT_SECRET = "AdminThhh" 
+const JWT_EXPIRES_IN = "3h"
+
 const users = [
   {
     id: 1,
@@ -24,7 +25,7 @@ const users = [
     role: "guest",
   },
 ];
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+console.log("JWT_SECRET:", JWT_SECRET);
 
 // POST: /api/auth/login
 router.post("/login", (req, res) => {
@@ -41,8 +42,8 @@ router.post("/login", (req, res) => {
 
   const token = jwt.sign(
     { id: user.id, username: user.username, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
   );
 
   res.json({

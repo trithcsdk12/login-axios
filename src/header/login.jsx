@@ -16,7 +16,7 @@ export default function LoginForm() {
     }
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/auth/check-role",
+        "http://localhost:8080/api/auth/check-role",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:8080/api/auth/login",
         {
           username,
           password,
