@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import newJson from "../../news.json";
-import { CCol, CTable, CPagination, CPaginationItem } from "@coreui/react";
-import { useState } from "react";
+import { CCol, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CPagination, CPaginationItem } from "@coreui/react";
 import ReactDOMServer from "react-dom/server";
 
 const itemsPerPage = 5;
 
-const item = newJson.map((newJ, index) => ({
+const items = newJson.map((newJ, index) => ({
   name: <div style={{ maxWidth: "200px" }}>{newJ.name}</div>,
   date: newJ.date,
   category: newJ.category,
@@ -60,25 +59,24 @@ const columns = [
   },
 ];
 
-function news() {
+function News() {
   const [currentPage, setCurrentPage] = useState(1);
   const [find, setFind] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const parseString = (element) => {
     return typeof element === "string"
       ? element
       : ReactDOMServer.renderToStaticMarkup(element);
   };
 
-  const filteredItems = find
-    ? item.filter((newJson) => {
-        const nameText = parseString(newJson.name);
-        const categoryText = parseString(newJson.category);
-        return (
-          nameText.toLowerCase().includes(find.toLowerCase()) ||
-          categoryText.toLowerCase().includes(find.toLowerCase())
-        );
-      })
-    : item;
+  const filteredItems = items.filter((item) => {
+    const nameText = parseString(item.name);
+    const categoryText = parseString(item.category);
+    const matchesSearch = nameText.toLowerCase().includes(find.toLowerCase()) || categoryText.toLowerCase().includes(find.toLowerCase());
+    const matchesCategory = selectedCategory ? categoryText === selectedCategory : true;
+    return matchesSearch && matchesCategory;
+  });
 
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
@@ -86,6 +84,9 @@ function news() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // Lấy danh sách các loại tin tức duy nhất
+  const uniqueCategories = [...new Set(newJson.map((newp) => newp.category))];
 
   return (
     <>
@@ -97,9 +98,61 @@ function news() {
           value={find}
           onChange={(e) => setFind(e.target.value)}
         />
+        <p>Bộ lọc tìm kiếm</p>
+        <p>Tổng cộng: {newJson.length}</p>
+        <p>Lọc theo loại tin tức</p>
+        <div className="dropdown">
+          <button
+            className="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {selectedCategory || "Chọn loại tin tức"}
+          </button>
+          <ul
+            className="dropdown-menu dropdown-menu-dark"
+            aria-labelledby="dropdownMenuButton2"
+          >
+            <li>
+              <a className="dropdown-item" href="#" onClick={() => setSelectedCategory("")}>
+                Tất cả
+              </a>
+            </li>
+            {uniqueCategories.map((category, index) => (
+              <li key={index}>
+                <a className="dropdown-item" href="#" onClick={() => setSelectedCategory(category)}>
+                  {parseString(category)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <CCol>
-        <CTable hover className="mt-3" columns={columns} items={display} />
+        <CTable hover className="mt-3">
+          <CTableHead>
+            <CTableRow>
+              {columns.map((column) => (
+                <CTableHeaderCell key={column.key} {...column._props}>
+                  {column.label}
+                </CTableHeaderCell>
+              ))}
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {display.map((item, index) => (
+              <CTableRow key={index}>
+                {columns.map((column) => (
+                  <CTableDataCell key={column.key}>
+                    {item[column.key]}
+                  </CTableDataCell>
+                ))}
+              </CTableRow>
+            ))}
+          </CTableBody>
+        </CTable>
       </CCol>
 
       {/* Pagination */}
@@ -132,4 +185,4 @@ function news() {
   );
 }
 
-export default news;
+export default News;
