@@ -1,8 +1,9 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
+dotenv.config();
 const router = express.Router();
-
 const users = [
   {
     id: 1,
@@ -23,6 +24,7 @@ const users = [
     role: "guest",
   },
 ];
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 // POST: /api/auth/login
 router.post("/login", (req, res) => {
@@ -48,7 +50,6 @@ router.post("/login", (req, res) => {
     user: {
       id: user.id,
       username: user.username,
-      role: user.role,
     },
   });
 });
