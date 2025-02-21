@@ -1,186 +1,293 @@
 import React, { useState } from "react";
 import newJson from "../../news.json";
-import { CCol, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CPagination, CPaginationItem } from "@coreui/react";
-import ReactDOMServer from "react-dom/server";
-
-const itemsPerPage = 5;
-
-const items = newJson.map((newJ, index) => ({
-  name: <div style={{ maxWidth: "200px" }}>{newJ.name}</div>,
-  date: newJ.date,
-  category: newJ.category,
-  desc: (
-    <div
-      style={{
-        maxWidth: "500px",
-        maxHeight: "100px",
-        overflow: "auto",
-        border: "1px solid #ccc",
-        padding: "5px",
-      }}
-    >
-      {newJ.desc}
-    </div>
-  ),
-  image: (
-    <img
-      src={newJ.image}
-      alt="News Image"
-      style={{ width: "300px", height: "auto" }}
-    />
-  ),
-}));
-
-const columns = [
-  {
-    key: "name",
-    label: "Tên tin tức",
-    _props: { scope: "col" },
-  },
-  {
-    key: "date",
-    label: "Ngày tin tức",
-    _props: { scope: "col" },
-  },
-  {
-    key: "category",
-    label: "Loại tin tức",
-    _props: { scope: "col" },
-  },
-  {
-    key: "desc",
-    label: "Chi tiết tin tức",
-    _props: { scope: "col" },
-  },
-  {
-    key: "image",
-    label: "Ảnh tin tức",
-    _props: { scope: "col" },
-  },
-];
+import {
+  CButton,
+  CCol,
+  CContainer,
+  CFormSelect,
+  CImage,
+  CRow,
+  CTable,
+} from "@coreui/react";
+import { axiosClient, imageBaseUrl } from "../../../axiosConfig";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import moment from "moment";
+import ReactPaginate from "react-paginate";
 
 function News() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [find, setFind] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const parseString = (element) => {
-    return typeof element === "string"
-      ? element
-      : ReactDOMServer.renderToStaticMarkup(element);
+  const [dataNews, setDataNews] = useState([]);
+
+  const [isPermissionCheck, setIsPermissionCheck] = useState(true);
+
+  const [dataNewsCategory, setDataNewsCategroy] = useState([]);
+
+  const [isCollapse, setIsCollapse] = useState(false);
+
+  const handleToggleCollapse = () => {
+    setIsCollapse((prevState) => !prevState);
   };
 
-  const filteredItems = items.filter((item) => {
-    const nameText = parseString(item.name);
-    const categoryText = parseString(item.category);
-    const matchesSearch = nameText.toLowerCase().includes(find.toLowerCase()) || categoryText.toLowerCase().includes(find.toLowerCase());
-    const matchesCategory = selectedCategory ? categoryText === selectedCategory : true;
-    return matchesSearch && matchesCategory;
-  });
+  const handleSearch = (keyword) => {
+    fetchDataNews(keyword)
+  }
 
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  //pagination state
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const display = filteredItems.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // search input
+  const [dataSearch, setDataSearch] = useState("");
 
-  // Lấy danh sách các loại tin tức duy nhất
+  const fetchDataNewsCategory = async () => {
+    try {
+      const response = await axiosClient.get(`admin/news-category`);
+      if (response.data.status === true) {
+        setDataNewsCategroy(response.data.list);
+      }
+    } catch (error) {
+      console.error("Fetch data news is error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataNewsCategory();
+  }, []);
+
+  const handlePageChange = ({ selected }) => {
+    const newPage = selected + 1;
+    if (newPage < 2) {
+      setPageNumber(newPage);
+      window.scrollTo(0, 0);
+      return;
+    }
+    window.scrollTo(0, 0);
+    setPageNumber(newPage);
+  };
+
+  const fetchDataNews = async (dataSearch = "") => {
+    try {
+      const response = await axiosClient.get(
+        `admin/news?data=${dataSearch}&page=${pageNumber}&category=${selectedCategory}`
+      );
+
+      if (response.data.status === true) {
+        setDataNews(response.data.list);
+      }
+
+      if (
+        response.data.status === false &&
+        response.data.mess == "no permission"
+      ) {
+        setIsPermissionCheck(false);
+      }
+    } catch (error) {
+      console.error("Fetch promotion news data is error", error);
+    }
+  };
+
+  const items =
+    dataNews?.data && dataNews?.data?.length > 0
+      ? dataNews?.data.map((item) => ({
+          title: (
+            <div
+              className="title-color"
+              style={{
+                width: 300,
+              }}
+            >
+              {item?.news_desc?.title}
+            </div>
+          ),
+          image: (
+            <CImage
+              className="border"
+              src={`${imageBaseUrl}${item.picture}`}
+              alt={`Ảnh tin k/m ${item?.news_desc?.id}`}
+              width={100}
+              height={80}
+              loading="lazy"
+            />
+          ),
+          cate: (
+            <div className="cate-color">
+              {item?.category_desc?.[0].cat_name}
+            </div>
+          ),
+          info: (
+            <div>
+              <span>{item?.views} lượt xem</span>
+              <div>{moment.unix(item?.date_post).format("DD-MM-YYYY")}</div>
+            </div>
+          ),
+          _cellProps: { id: { scope: "row" } },
+        }))
+      : [];
+
+  const columns = [
+    {
+      key: "title",
+      label: "Tiêu đề",
+      _props: { scope: "col" },
+    },
+    {
+      key: "image",
+      label: "Hình ảnh",
+      _props: { scope: "col" },
+    },
+    {
+      key: "cate",
+      label: "Danh mục",
+      _props: { scope: "col" },
+    },
+    {
+      key: "info",
+      label: "Thông tin",
+      _props: { scope: "col" },
+    },
+  ];
+
+  useEffect(() => {
+    fetchDataNews();
+  }, [pageNumber, selectedCategory]);
+
   const uniqueCategories = [...new Set(newJson.map((newp) => newp.category))];
 
   return (
     <>
-      <div>
-        <h1>Danh sách tin tức</h1>
-        <input
-          type="text"
-          placeholder="Tìm kiếm tin tức..."
-          value={find}
-          onChange={(e) => setFind(e.target.value)}
-        />
-        <p>Bộ lọc tìm kiếm</p>
-        <p>Tổng cộng: {newJson.length}</p>
-        <p>Lọc theo loại tin tức</p>
-        <div className="dropdown">
-          <button
-            className="btn btn-primary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton2"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {selectedCategory || "Chọn loại tin tức"}
-          </button>
-          <ul
-            className="dropdown-menu dropdown-menu-dark"
-            aria-labelledby="dropdownMenuButton2"
-          >
-            <li>
-              <a className="dropdown-item" href="#" onClick={() => setSelectedCategory("")}>
-                Tất cả
-              </a>
-            </li>
-            {uniqueCategories.map((category, index) => (
-              <li key={index}>
-                <a className="dropdown-item" href="#" onClick={() => setSelectedCategory(category)}>
-                  {parseString(category)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <CCol>
-        <CTable hover className="mt-3">
-          <CTableHead>
-            <CTableRow>
-              {columns.map((column) => (
-                <CTableHeaderCell key={column.key} {...column._props}>
-                  {column.label}
-                </CTableHeaderCell>
-              ))}
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {display.map((item, index) => (
-              <CTableRow key={index}>
-                {columns.map((column) => (
-                  <CTableDataCell key={column.key}>
-                    {item[column.key]}
-                  </CTableDataCell>
-                ))}
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-      </CCol>
+      <CContainer>
+        {!isPermissionCheck ? (
+          <h5>
+            <div>
+              Bạn không đủ quyền để thao tác trên danh mục quản trị này.
+            </div>
+            <div className="mt-4">
+              Vui lòng quay lại trang chủ{" "}
+              <Link to={"/dashboard"}>(Nhấn vào để quay lại)</Link>
+            </div>
+          </h5>
+        ) : (
+          <>
+            <CRow className="mb-3">
+              <CCol>
+                <h3>QUẢN LÝ TIN TỨC</h3>
+              </CCol>
+              <CCol md={6}>
+                <div className="d-flex justify-content-end">
+                </div>
+              </CCol>
+            </CRow>
 
-      {/* Pagination */}
-      <CPagination align="center" className="mt-3">
-        <CPaginationItem
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          &laquo;
-        </CPaginationItem>
+            <CRow>
+              <CCol>
+                <table className="filter-table">
+                  <thead>
+                    <tr>
+                      <th colSpan="2">
+                        <div className="d-flex justify-content-between">
+                          <span>Bộ lọc tìm kiếm</span>
+                          <span
+                            className="toggle-pointer"
+                            onClick={handleToggleCollapse}
+                          >
+                            {isCollapse ? "▼" : "▲"}
+                          </span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  {!isCollapse && (
+                    <tbody>
+                      <tr>
+                        <td>Tổng cộng</td>
+                        <td className="total-count">{dataNews?.total}</td>
+                      </tr>
+                      <tr>
+                        <td>Lọc theo vị trí</td>
+                        <td>
+                          <CFormSelect
+                            className="component-size w-50"
+                            aria-label="Chọn yêu cầu lọc"
+                            options={[
+                              { label: "Chọn danh mục", value: "" },
+                              ...(dataNewsCategory &&
+                              dataNewsCategory.length > 0
+                                ? dataNewsCategory.map((group) => ({
+                                    label: group?.news_category_desc?.cat_name,
+                                    value: group.cat_id,
+                                  }))
+                                : []),
+                            ]}
+                            value={selectedCategory}
+                            onChange={(e) =>
+                              setSelectedCategory(e.target.value)
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Tìm kiếm</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="search-input"
+                            value={dataSearch}
+                            onChange={(e) => setDataSearch(e.target.value)}
+                          />
+                          <button
+                            onClick={() => handleSearch(dataSearch)}
+                            className="submit-btn"
+                          >
+                            Submit
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  )}
+                </table>
+              </CCol>
 
-        {[...Array(totalPages)].map((_, index) => (
-          <CPaginationItem
-            key={index}
-            active={index + 1 === currentPage}
-            onClick={() => setCurrentPage(index + 1)}
-          >
-            {index + 1}
-          </CPaginationItem>
-        ))}
+              <CCol md={12} className="mt-3">
+                <CButton color="primary" size="sm">
+                  Xóa vĩnh viễn
+                </CButton>
+              </CCol>
 
-        <CPaginationItem
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          &raquo;
-        </CPaginationItem>
-      </CPagination>
+              <CCol>
+                <CTable
+                  hover
+                  className="mt-3"
+                  columns={columns}
+                  items={items}
+                />
+              </CCol>
+
+              <div className="d-flex justify-content-end">
+                <ReactPaginate
+                  pageCount={Math.ceil(dataNews?.total / dataNews?.per_page)}
+                  pageRangeDisplayed={3}
+                  marginPagesDisplayed={1}
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakLabel="..."
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  onPageChange={handlePageChange}
+                  containerClassName={"pagination"}
+                  activeClassName={"active"}
+                  previousLabel={"<<"}
+                  nextLabel={">>"}
+                />
+              </div>
+            </CRow>
+          </>
+        )}
+      </CContainer>
     </>
   );
 }
