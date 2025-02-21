@@ -22,7 +22,11 @@ export default function LoginForm() {
           },
         }
       );
-      alert(response.data.message);
+      if (response.status === 200) {
+        alert(response.data.message);
+      } else {
+        alert("Không thể kiểm tra vai trò. Vui lòng thử lại!");
+      }
     } catch (error) {
       console.error("Lỗi kiểm tra vai trò", error);
       alert("Không thể kiểm tra vai trò. Vui lòng thử lại!");
@@ -40,9 +44,13 @@ export default function LoginForm() {
         }
       );
 
-      // Lưu JWT vào localStorage hoặc sessionStorage
-      localStorage.setItem("token", response.data.token);
-      alert("Đăng nhập thành công!");
+      if (response.status === 200) {
+        // Lưu JWT vào localStorage hoặc sessionStorage
+        localStorage.setItem("token", response.data.token);
+        alert("Đăng nhập thành công!");
+      } else {
+        alert("Sai tài khoản hoặc mật khẩu");
+      }
     } catch (error) {
       console.error("Đăng nhập thất bại", error);
       alert("Sai tài khoản hoặc mật khẩu");
@@ -50,8 +58,9 @@ export default function LoginForm() {
   };
 
   const handleDelete = () => {
-    localStorage.clear()
-  }
+    localStorage.clear();
+    alert("Đã xoá LocalStorage");
+  };
 
   return (
     <>
